@@ -11,16 +11,28 @@ LIBGEMLDFLAGS	=	-L$(LIBGEMPATH) -lgem
 ROOTCFLAGS	=	$(shell root-config --cflags)
 ROOTLDFLAGS	=	$(shell root-config --libs)
 
-LDFLAGS		=	$(LIBGEMLDFLAGS) $(ROOTLDFLAGS)
+# for INGRID
+LIBINGRIDPATH	=	/home/philipp/Private/T2K/GUI_indep/lib
+LIBINGRID	=	$(LIBINGRIDPATH)/INGRIDEVENTSUMMARY.so $(LIBINGRIDPATH)/IngridHitSummary.so \
+			$(LIBINGRIDPATH)/IngridSimHitSummary.so $(LIBINGRIDPATH)/IngridSimVertexSummary.so \
+		        $(LIBINGRIDPATH)/IngridSimParticleSummary.so $(LIBINGRIDPATH)/BeamInfoSummary.so \
+		        $(LIBINGRIDPATH)/IngridBasicReconSummary.so $(LIBINGRIDPATH)/Ingrid1stReducSummary.so \
+		        $(LIBINGRIDPATH)/IngridTrackSummary.so $(LIBINGRIDPATH)/NeutInfoSummary.so \
+		        $(LIBINGRIDPATH)/PMReconSummary.so $(LIBINGRIDPATH)/PMAnaSummary.so
+
+INGRIDLDFLAGS	=	-L$(LIBINGRIDPATH) $(LIBINGRID)
+
+LDFLAGS		=	$(INGRIDLDFLAGS) $(LIBGEMLDFLAGS) $(ROOTLDFLAGS)
 CFLAGS		=	$(ROOTCFLAGS)
+IFLAGS		=	-I$(LIBINGRIDPATH)
 
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJECTS) $(ROOTFLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $(EXEC) $(OBJECTS) $(ROOTFLAGS) $(LDFLAGS)
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@ $(ROOTFLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ $(ROOTFLAGS)
 
 clean:
 	rm $(EXEC) $(OBJECTS)

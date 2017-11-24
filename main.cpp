@@ -1,10 +1,6 @@
 #include <iostream>
-#include <TApplication.h>
-#include <TAxis.h>
-#include <TCanvas.h>
-#include <TGraph.h>
-#include <TLine.h>
-#include <TRandom1.h>
+#include "RootIncludes.h"
+#include "IngridIncludes.h"
 #include "GEMFitter.h"
 
 int main(int argc, char** argv)
@@ -14,46 +10,46 @@ int main(int argc, char** argv)
     // make fitter object
     int dim = 2;
     double accuracy = 0.00001;
-    double scale = 13;
+    double scale = 50;
     
     GEMFitter* gf = new GEMFitter(dim);
 
-    int num_points = 25;
     std::vector<GEMVector> hits;
-
-    TRandom1* gen = new TRandom1();
     
-    // prepare a couple of points
-    for(int i = 0; i < num_points; i++)
+    // now, need to read the data files and then perform the fitting (do a plot in between)
+    TFile* file = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise_ana.root");
+    TTree* tree = (TTree*) file -> Get("tree");
+    TBranch* br = tree -> GetBranch("fDefaultReco.");
+
+    // now, read the hits coming from a single event
+    IngridEventSummary* evt = new IngridEventSummary();    
+    br -> SetAddress(&evt);
+
+    // get the first event here
+    tree -> GetEntry(206);
+
+    int nHits = evt -> NIngridHits();
+    std::cout << "have " << nHits << " hits" << std::endl;
+    IngridHitSummary* Hit = new IngridHitSummary();
+  
+    for(int i = 0; i < nHits; i++)
     {
-	hits.push_back(GEMVector(dim));
+	Hit = evt -> GetIngridHit(i);
+	
+	// get the hit coordinates (use only one view for the moment)
+	if(Hit -> mod == 15)
+	{
+	    if(Hit -> view == 0)
+	    {
+		hits.push_back(GEMVector(dim));
 
-	double mu = 0;
-	double x = 1.0;
-		
-	if(gen -> Rndm() < 0.5)
-	{
-	    mu = 0.25;
+		hits.back().SetCoord(0, Hit -> z);
+		hits.back().SetCoord(1, Hit -> xy);
+	    }
 	}
-	else
-	{
-	    mu = 0.75;
-	}
-
-	if(gen -> Rndm() < 0.5)
-	{
-	    x = 1.0;
-	}
-	else
-	{
-	    x = -1.0;
-	}
-
-	double ov =  gen -> Gaus(mu, 0.005);
-	hits[i].SetCoord(0, ov);
-	hits[i].SetCoord(1, gen -> Rndm());
-	//hits[i].SetCoord(1, x * ov);
     }
+
+    std::cout << "retained " << hits.size() << " hits" << std::endl;
     
     // add all the points to the fitting object
     for(std::vector<GEMVector>::iterator it = hits.begin(); it != hits.end(); it++)
@@ -80,16 +76,13 @@ int main(int argc, char** argv)
     
     canv -> cd();
     g -> Draw("A*");    
-    g -> GetXaxis() -> SetRangeUser(-1., 1.0);
-    g -> GetYaxis() -> SetRangeUser(-1., 1.0);
-    g -> Draw("A*");
     canv -> Update();
-
     
     for(std::vector<GEMLine>::iterator it = tracks.begin(); it != tracks.end(); it++)
     {
-	GEMVector start = (*it).GetRefPoint() - (*it).GetDirVect();
-	GEMVector end = (*it).GetRefPoint() + (*it).GetDirVect();
+	// TODO: find scale factor for line automatically
+	GEMVector start = (*it).GetRefPoint() - 100. * ((*it).GetDirVect());
+	GEMVector end = (*it).GetRefPoint() + 100. * ((*it).GetDirVect());
 	TLine* line = new TLine(start.GetCoord(0), start.GetCoord(1), end.GetCoord(0), end.GetCoord(1));
 	line -> Draw();
     }

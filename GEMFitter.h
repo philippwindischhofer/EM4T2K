@@ -24,6 +24,10 @@ public:
     GEMVector& operator-=(const GEMVector& rhs);
     friend GEMVector operator-(GEMVector lhs, const GEMVector& rhs);
 
+    GEMVector& operator*=(float rhs);
+    friend GEMVector operator*(GEMVector lhs, float rhs);
+    friend GEMVector operator*(float rhs, GEMVector lhs);
+
 private:
     int dim;
     std::vector<double> vals;

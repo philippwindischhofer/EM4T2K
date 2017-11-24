@@ -14,7 +14,7 @@ void GEMFitter::AddPoint(GEMVector& pt)
 void GEMFitter::PerformFit(double convcrit, double scalecrit)
 {
     emws = multifit(ds, convcrit, scalecrit, LINE, 0, NULL);
-    remove_degenerated_objects_gem(emws, 4);
+    remove_degenerated_objects_gem(emws, 6);
 }
 
 int GEMFitter::GetNumberLines()
@@ -80,6 +80,28 @@ GEMVector& GEMVector::operator-=(const GEMVector& rhs)
 GEMVector operator-(GEMVector lhs, const GEMVector& rhs)
 {
     lhs -= rhs;
+    return lhs;
+}
+
+GEMVector& GEMVector::operator*=(float rhs)
+{
+    for(int i = 0; i < dim; i++)
+    {
+	vals[i] *= rhs;
+    }
+
+    return *this;
+}
+
+GEMVector operator*(GEMVector lhs, float rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+GEMVector operator*(float rhs, GEMVector lhs)
+{
+    lhs *= rhs;
     return lhs;
 }
 
