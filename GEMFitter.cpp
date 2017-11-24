@@ -11,10 +11,16 @@ void GEMFitter::AddPoint(GEMVector& pt)
     add_point_dataset(ds, new_valued_point(dim, pt.GetPtr()));
 }
 
+void GEMFitter::Reset()
+{
+    free_dataset(ds);
+    ds = new_dataset_zero(0, dim);
+}
+
 void GEMFitter::PerformFit(double convcrit, double scalecrit)
 {
     emws = multifit(ds, convcrit, scalecrit, LINE, 0, NULL);
-    remove_degenerated_objects_gem(emws, 6);
+    remove_degenerated_objects_gem(emws, 4);
 }
 
 int GEMFitter::GetNumberLines()

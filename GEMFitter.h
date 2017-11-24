@@ -51,6 +51,7 @@ class GEMFitter
 public:
     GEMFitter(int dim);
     void AddPoint(GEMVector& pt);
+    void Reset();
     void PerformFit(double scalecrit, double convcrit);
     int GetNumberLines();
     GEMLine GetLine(int n);
