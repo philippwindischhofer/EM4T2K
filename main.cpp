@@ -14,11 +14,11 @@ int main(int argc, char** argv)
     // make fitter object
     int dim = 2;
     double accuracy = 0.00001;
-    double scale = 30;
+    double scale = 13;
     
     GEMFitter* gf = new GEMFitter(dim);
 
-    int num_points = 15;
+    int num_points = 25;
     std::vector<GEMVector> hits;
 
     TRandom1* gen = new TRandom1();
@@ -49,10 +49,10 @@ int main(int argc, char** argv)
 	    x = -1.0;
 	}
 
-	double ov =  gen -> Gaus(mu, 0.05);
+	double ov =  gen -> Gaus(mu, 0.005);
 	hits[i].SetCoord(0, ov);
-	//hits[i].SetCoord(1, gen -> Rndm());
-	hits[i].SetCoord(1, x * ov);
+	hits[i].SetCoord(1, gen -> Rndm());
+	//hits[i].SetCoord(1, x * ov);
     }
     
     // add all the points to the fitting object
@@ -93,7 +93,8 @@ int main(int argc, char** argv)
 	TLine* line = new TLine(start.GetCoord(0), start.GetCoord(1), end.GetCoord(0), end.GetCoord(1));
 	line -> Draw();
     }
-    
+
+    canv -> SaveAs("out.pdf");
     app.Run();
     
     return(0);
