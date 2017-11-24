@@ -2,15 +2,15 @@
 #define __EVENT_DISPLAY_H
 
 #include <iostream>
+#include <fstream>
 #include <TCanvas.h>
 #include <TH2D.h>
 #include <TBox.h>
 #include <TGraph.h>
 #include <TLine.h>
-#include "GEMFitter.h"
 
-//#include "IngridConstants.h"
-//#include "INGRID_Dimension.hh"
+#include "DetectorGeometry.h"
+#include "GEMFitter.h"
 
 class EventDisplay
 {
@@ -25,8 +25,10 @@ public:
     void Clear();
 
 private:
-    TCanvas canv;
-    TGraph g;
+    void PrintGeometry();
+    std::vector<double> GetConfigFromFile(std::string path);
+    TCanvas* canv;
+    TH2D* hist;
 };
 
 #endif

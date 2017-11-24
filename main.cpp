@@ -3,6 +3,7 @@
 #include "IngridIncludes.h"
 #include "GEMFitter.h"
 #include "EventDisplay.h"
+#include "DetectorGeometry.h"
 
 int main(int argc, char** argv)
 {
@@ -53,15 +54,15 @@ int main(int argc, char** argv)
 		{
 		    HitsY.push_back(GEMVector(dim));
 
-		    HitsY.back().SetCoord(0, Hit -> z);
-		    HitsY.back().SetCoord(1, Hit -> xy);
+		    HitsY.back().SetCoord(0, Hit -> z + GEO_Z_OFFSET);
+		    HitsY.back().SetCoord(1, Hit -> xy + GEO_XY_OFFSET);
 		}
 		else if(Hit -> view == 1)
 		{
 		    HitsX.push_back(GEMVector(dim));
 
-		    HitsX.back().SetCoord(0, Hit -> z);
-		    HitsX.back().SetCoord(1, Hit -> xy);	
+		    HitsX.back().SetCoord(0, Hit -> z + GEO_Z_OFFSET);
+		    HitsX.back().SetCoord(1, Hit -> xy + GEO_XY_OFFSET);	
 		}
 	    }
 	}
@@ -112,11 +113,11 @@ int main(int argc, char** argv)
 	EvdX -> PlotHits(HitsX);
 	EvdX -> PlotTracks(TracksX);
 	EvdX -> Update();    
-    
+	
 	EvdY -> PlotHits(HitsY);
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
-    
+	    
 	//EvdX -> SaveAs("test.pdf");
 
 	std::cin >> RequestedEvent;
