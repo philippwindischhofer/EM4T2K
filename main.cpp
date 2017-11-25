@@ -14,8 +14,8 @@ int main(int argc, char** argv)
     double accuracy = 0.00001;
     double scale = 50;
 
-    EventDisplay* EvdX = new EventDisplay("X events");
-    EventDisplay* EvdY = new EventDisplay("Y events");
+    EventDisplay* EvdX = new EventDisplay("X events", "z [cm]", "x [cm]");
+    EventDisplay* EvdY = new EventDisplay("Y events", "z [cm]", "y [cm]");
     EvdX -> Update();
     EvdY -> Update();
     
@@ -118,7 +118,8 @@ int main(int argc, char** argv)
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
 	    
-	//EvdX -> SaveAs("test.pdf");
+	EvdX -> SaveAs("outX.pdf");
+	EvdY -> SaveAs("outY.pdf");
 
 	std::cin >> RequestedEvent;
     }

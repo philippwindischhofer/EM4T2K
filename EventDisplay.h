@@ -15,7 +15,7 @@
 class EventDisplay
 {
 public:
-    EventDisplay(std::string title);
+    EventDisplay(std::string title, std::string xtitle, std::string ytitle);
     void PlotHit(GEMVector& hit);
     void PlotHits(std::vector<GEMVector>& hits);
     void PlotTrack(GEMLine& track);
