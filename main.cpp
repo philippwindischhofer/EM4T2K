@@ -4,6 +4,7 @@
 #include "GEMFitter.h"
 #include "EventDisplay.h"
 #include "DetectorGeometry.h"
+#include "TString.h"
 
 int main(int argc, char** argv)
 {
@@ -118,8 +119,8 @@ int main(int argc, char** argv)
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
 	    
-	EvdX -> SaveAs("outX.pdf");
-	EvdY -> SaveAs("outY.pdf");
+	EvdX -> SaveAs(Form("outX-%d.pdf", RequestedEvent));
+	EvdY -> SaveAs(Form("outY-%d.pdf", RequestedEvent));
 
 	std::cin >> RequestedEvent;
     }
