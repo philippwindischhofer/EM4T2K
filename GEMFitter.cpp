@@ -1,6 +1,6 @@
 #include "GEMFitter.h"
 
-GEMFitter::GEMFitter(int dim)
+GEMFitter::GEMFitter(int dim) : min(dim), max(dim)
 {
     this -> dim = dim;
     ds = new_dataset_zero(0, dim);
@@ -19,8 +19,9 @@ void GEMFitter::Reset()
 
 void GEMFitter::PerformFit(double convcrit, double scalecrit)
 {
+    SetScreenSizeLibgem();
     emws = multifit(ds, convcrit, scalecrit, LINE, 0, NULL);
-    remove_degenerated_objects_gem(emws, 4);
+    //remove_degenerated_objects_gem(emws, degen_param * ds -> nb_points);
 }
 
 int GEMFitter::GetNumberLines()
@@ -34,6 +35,29 @@ GEMLine GEMFitter::GetLine(int n)
     GEMVector refPoint(dim, fitline -> ref -> coords);
     GEMVector dirVect(dim, fitline -> dir_vect -> coords);
     return GEMLine(refPoint, dirVect);
+}
+
+void GEMFitter::SetScreenSize(GEMVector& min_new, GEMVector& max_new)
+{
+    for(int i = 0; i < dim; i++)
+    {	
+	min.SetCoord(i, min_new.GetCoord(i));
+	max.SetCoord(i, max_new.GetCoord(i));
+    }
+}
+
+void GEMFitter::SetScreenSizeLibgem()
+{
+    for(int i = 0; i < dim; i++)
+    {
+	ds -> point_min -> coords[i] = min.GetCoord(i);
+	ds -> point_max -> coords[i] = max.GetCoord(i);
+    }
+}
+
+void GEMFitter::PrintDataset()
+{
+    print_dataset(ds);
 }
 
 //--------------------------

@@ -8,9 +8,6 @@ EventDisplay::EventDisplay(std::string title, std::string xtitle, std::string yt
     canv = new TCanvas(title.c_str(), title.c_str());
     hist = new TH2D(title.c_str(), title.c_str(), ZBins.size() - 1, &ZBins[0], XBins.size() - 1, &XBins[0]);
 
-    hist -> GetXaxis() -> SetLimits(0., 100.);
-    hist -> GetYaxis() -> SetLimits(0., 100.);
-
     hist -> GetXaxis() -> SetTitle(xtitle.c_str());
     hist -> GetYaxis() -> SetTitle(ytitle.c_str());
 

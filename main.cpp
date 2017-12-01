@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     // make fitter object
     int dim = 2;
     double accuracy = 0.00001;
-    double scale = 50;
+    double scale = 10;
 
     EventDisplay* EvdX = new EventDisplay("X events", "z [cm]", "x [cm]");
     EventDisplay* EvdY = new EventDisplay("Y events", "z [cm]", "y [cm]");
@@ -73,14 +73,24 @@ int main(int argc, char** argv)
 
 	// perform the X fitting
 	GEMFitter* gf = new GEMFitter(dim);
+	
+	// now set the screen size manually for testing
+	GEMVector min(2);
+	GEMVector max(2);
+	min.SetCoord(0, 0.0); min.SetCoord(1, 0.0);
+	max.SetCoord(0, 45.0); max.SetCoord(1, 100.0);
+	gf -> SetScreenSize(min, max);
 
 	// add all the points to the fitting object and perform the actual fit
 	for(std::vector<GEMVector>::iterator it = HitsX.begin(); it != HitsX.end(); it++)
 	{
 	    gf -> AddPoint(*it);
 	}
-
+	
 	gf -> PerformFit(accuracy, scale);
+	
+	std::cout << "this is the X dataset for event " << RequestedEvent << std::endl;
+	gf -> PrintDataset();
 
 	// read back the fitted tracks
 	std::vector<GEMLine> TracksX;
@@ -99,6 +109,9 @@ int main(int argc, char** argv)
 	}
 
 	gf -> PerformFit(accuracy, scale);
+	
+	std::cout << "this is the X dataset for event " << RequestedEvent << std::endl;
+	gf -> PrintDataset();
 
 	// read back the fitted tracks
 	std::vector<GEMLine> TracksY;
@@ -119,8 +132,8 @@ int main(int argc, char** argv)
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
 	    
-	EvdX -> SaveAs(Form("outX-%d.pdf", RequestedEvent));
-	EvdY -> SaveAs(Form("outY-%d.pdf", RequestedEvent));
+	EvdX -> SaveAs(Form("./output/outX-%d.pdf", RequestedEvent));
+	EvdY -> SaveAs(Form("./output/outY-%d.pdf", RequestedEvent));
 
 	std::cin >> RequestedEvent;
     }

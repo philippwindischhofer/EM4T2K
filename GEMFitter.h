@@ -55,11 +55,16 @@ public:
     void PerformFit(double scalecrit, double convcrit);
     int GetNumberLines();
     GEMLine GetLine(int n);
+    void SetScreenSize(GEMVector& min_new, GEMVector& max_new);
+    void PrintDataset();      
 
 private:
     int dim;
     struct gem_ws* emws;
     struct dataset* ds;
+    const static double degen_param = 0.4;
+    GEMVector min, max;
+    void SetScreenSizeLibgem();
 };
 
 #endif
