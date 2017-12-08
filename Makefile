@@ -1,7 +1,16 @@
-EXEC		=	main
+EXEC1		=	main
+OBJECTS1	= 	main.o
+
+EXEC2		=	comp
+OBJECTS2	=	comp.o
+
 CC		= 	g++-4.9
-SOURCES		=	$(wildcard *.cpp)
-OBJECTS		=	$(patsubst src%,obj%, $(patsubst %.cpp,%.o, $(SOURCES)))
+
+# used previously, for only one target
+# SOURCES		=	$(wildcard *.cpp)
+# OBJECTS		=	$(patsubst src%,obj%, $(patsubst %.cpp,%.o, $(SOURCES)))
+
+OBJECTSLIB	=	EventDisplay.o EventWriter.o GEMFitter.o IngridUtils.o
 
 # for libgem
 LIBGEMPATH	=	/home/philipp/Private/T2K/libgem/
@@ -26,13 +35,16 @@ LDFLAGS		=	$(INGRIDLDFLAGS) $(LIBGEMLDFLAGS) $(ROOTLDFLAGS)
 CFLAGS		=	$(ROOTCFLAGS)
 IFLAGS		=	-I$(LIBINGRIDPATH)
 
-all: $(EXEC)
+all: $(EXEC1) $(EXEC2)
 
-$(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $(EXEC) $(OBJECTS) $(ROOTFLAGS) $(LDFLAGS)
+$(EXEC1): $(OBJECTS1) $(OBJECTSLIB)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $(EXEC1) $(OBJECTS1) $(OBJECTSLIB) $(ROOTFLAGS) $(LDFLAGS)
+
+$(EXEC2): $(OBJECTS2) $(OBJECTSLIB)
+	$(CC) $(CFLAGS) $(IFLAGS) -o $(EXEC2) $(OBJECTS2) $(OBJECTSLIB) $(ROOTFLAGS) $(LDFLAGS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ $(ROOTFLAGS)
 
 clean:
-	rm $(EXEC) $(OBJECTS)
+	rm $(EXEC1) $(OBJECTS1) $(OBJECTS2) $(OBJECTSLIB)

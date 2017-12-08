@@ -9,6 +9,7 @@
 #include <TRandom1.h>
 #include <TFile.h>
 #include <TTree.h>
+#include <TColor.h>
 #include <TBranch.h>
 
 #endif

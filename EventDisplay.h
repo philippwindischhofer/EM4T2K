@@ -12,6 +12,9 @@
 #include "DetectorGeometry.h"
 #include "GEMFitter.h"
 
+#define ED_VIEW_X 1
+#define ED_VIEW_Y 0
+
 class EventDisplay
 {
 public:

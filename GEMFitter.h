@@ -1,8 +1,14 @@
+/*
+ * Copyright 2017 Philipp Windischhofer (philipp.windischhofer@polytechnique.edu)
+ * libgem2ROOT
+ */
+
 #ifndef __GEMFitter_h
 #define __GEMFitter_h
 
 #include <iostream>
 #include <vector>
+#include "RootIncludes.h"
 
 extern "C" {
 #include "../libgem/libgem.h"
@@ -40,10 +46,16 @@ public:
     GEMLine(GEMVector refPoint, GEMVector dirVect);
     GEMVector GetRefPoint();
     GEMVector GetDirVect();
+    double GetColor();
+    double GetStyle();
+    void SetColor(double newcolor);
+    void SetStyle(double newstyle);
 
 private:
     GEMVector refPoint;
     GEMVector dirVect;
+    double color;
+    double style;
 };
 
 class GEMFitter
@@ -62,7 +74,7 @@ private:
     int dim;
     struct gem_ws* emws;
     struct dataset* ds;
-    const static double degen_param = 0.4;
+    const static double degen_param = 0.1;
     GEMVector min, max;
     void SetScreenSizeLibgem();
 };

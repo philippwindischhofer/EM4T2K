@@ -4,6 +4,7 @@
 #include "GEMFitter.h"
 #include "EventDisplay.h"
 #include "DetectorGeometry.h"
+#include "EventWriter.h"
 #include "TString.h"
 
 int main(int argc, char** argv)
@@ -13,7 +14,7 @@ int main(int argc, char** argv)
     // make fitter object
     int dim = 2;
     double accuracy = 0.00001;
-    double scale = 10;
+    double scale = 30;
 
     EventDisplay* EvdX = new EventDisplay("X events", "z [cm]", "x [cm]");
     EventDisplay* EvdY = new EventDisplay("Y events", "z [cm]", "y [cm]");
@@ -21,38 +22,46 @@ int main(int argc, char** argv)
     EvdY -> Update();
     
     // now, need to read the data files and then perform the fitting (do a plot in between)
-    TFile* file = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise_ana.root");
-    TTree* tree = (TTree*) file -> Get("tree");
-    TBranch* br = tree -> GetBranch("fDefaultReco.");
+    TFile* file_in = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise.root");    
+    TTree* tree_in = (TTree*) file_in -> Get("tree");
+    TBranch* br = tree_in -> GetBranch("fDefaultReco.");
 
+    // prepare the object that is going to write the processed events back to disk
+    EventWriter* ew = new EventWriter("./out.root");
+    
     // now, read the hits coming from a single event
-    IngridEventSummary* evt = new IngridEventSummary();    
-    br -> SetAddress(&evt);
+    IngridEventSummary* evt_in = new IngridEventSummary();    
+    br -> SetAddress(&evt_in);
 
     // get the first event here
 
     int RequestedEvent = 0;
+    
     std::cin >> RequestedEvent;
-
     std::cout << "got " << RequestedEvent << std::endl;
 
     while(RequestedEvent != -1)
+	//while(RequestedEvent < 300)
     {
-	tree -> GetEntry(RequestedEvent);
+	tree_in -> GetEntry(RequestedEvent);
 	IngridHitSummary* Hit = new IngridHitSummary();
 
 	std::vector<GEMVector> HitsY;
 	std::vector<GEMVector> HitsX;
 
-	for(int i = 0; i < evt -> NIngridHits(); i++)
+	// forward this event also to the output writer
+	ew -> SetEvent(evt_in);
+
+	for(int i = 0; i < evt_in -> NIngridHits(); i++)
 	{
-	    Hit = evt -> GetIngridHit(i);
+	    Hit = evt_in -> GetIngridHit(i);
 	
 	    // get the hit coordinates (use only one view for the moment)
-	    if(Hit -> mod == 15)
+	    if((Hit -> mod == 15) && (Hit -> time < 20))
 	    {
 		if(Hit -> view == 0)
 		{
+		    // the Y-plane hits
 		    HitsY.push_back(GEMVector(dim));
 
 		    HitsY.back().SetCoord(0, Hit -> z + GEO_Z_OFFSET);
@@ -60,6 +69,7 @@ int main(int argc, char** argv)
 		}
 		else if(Hit -> view == 1)
 		{
+		    // the X-plane hits
 		    HitsX.push_back(GEMVector(dim));
 
 		    HitsX.back().SetCoord(0, Hit -> z + GEO_Z_OFFSET);
@@ -97,6 +107,7 @@ int main(int argc, char** argv)
 	for(int i = 0; i < gf -> GetNumberLines(); i++)
 	{
 	    TracksX.push_back(gf -> GetLine(i));
+	    ew -> AddTrack(gf -> GetLine(i), EW_VIEW_X);
 	}
 
 	// perform the Y fitting
@@ -110,7 +121,7 @@ int main(int argc, char** argv)
 
 	gf -> PerformFit(accuracy, scale);
 	
-	std::cout << "this is the X dataset for event " << RequestedEvent << std::endl;
+	std::cout << "this is the Y dataset for event " << RequestedEvent << std::endl;
 	gf -> PrintDataset();
 
 	// read back the fitted tracks
@@ -118,7 +129,14 @@ int main(int argc, char** argv)
 	for(int i = 0; i < gf -> GetNumberLines(); i++)
 	{
 	    TracksY.push_back(gf -> GetLine(i));
+	    ew -> AddTrack(gf -> GetLine(i), EW_VIEW_Y);
 	}
+
+	// at this point, have all found tracks in the X- and Y-planes available
+	// now, just need to save them back to a ROOT tree
+
+	// TODO: call here the event writer again to add the found tracks
+	ew -> WriteEvent();
 
 	// now plot everything
 	EvdX -> Clear();
@@ -131,14 +149,19 @@ int main(int argc, char** argv)
 	EvdY -> PlotHits(HitsY);
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
-	    
+
+	// save the event displays
 	EvdX -> SaveAs(Form("./output/outX-%d.pdf", RequestedEvent));
 	EvdY -> SaveAs(Form("./output/outY-%d.pdf", RequestedEvent));
 
+	// take the next event
 	std::cin >> RequestedEvent;
+
+	//RequestedEvent++;
     }
 
     std::cout << "stopped by user" << std::endl;
+    delete ew;
 
     app.Run();
     return(0);

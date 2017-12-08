@@ -1,3 +1,8 @@
+/*
+ * Copyright 2017 Philipp Windischhofer (philipp.windischhofer@polytechnique.edu)
+ * libgem2ROOT
+ */
+
 #include "GEMFitter.h"
 
 GEMFitter::GEMFitter(int dim) : min(dim), max(dim)
@@ -21,7 +26,7 @@ void GEMFitter::PerformFit(double convcrit, double scalecrit)
 {
     SetScreenSizeLibgem();
     emws = multifit(ds, convcrit, scalecrit, LINE, 0, NULL);
-    //remove_degenerated_objects_gem(emws, degen_param * ds -> nb_points);
+    remove_degenerated_objects_gem(emws, degen_param * ds -> nb_points);
 }
 
 int GEMFitter::GetNumberLines()
@@ -161,10 +166,10 @@ void GEMVector::Print() const
 
 //---------------------------
 
-GEMLine::GEMLine(int dim) : refPoint(dim), dirVect(dim)
+GEMLine::GEMLine(int dim) : refPoint(dim), dirVect(dim), color(kRed), style(2)
 { }
 
-GEMLine::GEMLine(GEMVector refPoint, GEMVector dirVect) : refPoint(refPoint), dirVect(dirVect)
+GEMLine::GEMLine(GEMVector refPoint, GEMVector dirVect) : refPoint(refPoint), dirVect(dirVect), color(kRed), style(2)
 { }
 
 GEMVector GEMLine::GetRefPoint()
@@ -175,4 +180,24 @@ GEMVector GEMLine::GetRefPoint()
 GEMVector GEMLine::GetDirVect()
 {
     return dirVect;
+}
+
+double GEMLine::GetColor()
+{
+    return color;
+}
+
+double GEMLine::GetStyle()
+{
+    return style;
+}
+
+void GEMLine::SetColor(double newcolor)
+{
+    color = newcolor;
+}
+
+void GEMLine::SetStyle(double newstyle)
+{
+    style = newstyle;
 }

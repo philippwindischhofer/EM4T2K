@@ -37,9 +37,9 @@ void EventDisplay::PlotTrack(GEMLine& track)
     GEMVector end = track.GetRefPoint() + 100. * (track.GetDirVect());
     TLine* line = new TLine(start.GetCoord(0), start.GetCoord(1), end.GetCoord(0), end.GetCoord(1));
 
-    line->SetLineStyle(1);
+    line->SetLineStyle(track.GetStyle());
     line->SetLineWidth(2);
-    line->SetLineColor(2);  
+    line->SetLineColor(track.GetColor());  
     
     canv -> cd();
     line -> Draw("same");
