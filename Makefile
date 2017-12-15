@@ -13,7 +13,7 @@ CC		= 	g++-4.9
 OBJECTSLIB	=	EventDisplay.o EventWriter.o GEMFitter.o IngridUtils.o EventMetrics.o EventReferee.o
 
 # for libgem
-LIBGEMPATH	=	/home/philipp/Private/T2K/libgem/
+LIBGEMPATH	=	../libgem/
 LIBGEMLDFLAGS	=	-L$(LIBGEMPATH) -lgem
 
 # for ROOT
@@ -21,7 +21,7 @@ ROOTCFLAGS	=	$(shell root-config --cflags)
 ROOTLDFLAGS	=	$(shell root-config --libs)
 
 # for INGRID
-LIBINGRIDPATH	=	/home/philipp/Private/T2K/GUI_indep/lib
+LIBINGRIDPATH	=	./ingridlib
 LIBINGRID	=	$(LIBINGRIDPATH)/INGRIDEVENTSUMMARY.so $(LIBINGRIDPATH)/IngridHitSummary.so \
 			$(LIBINGRIDPATH)/IngridSimHitSummary.so $(LIBINGRIDPATH)/IngridSimVertexSummary.so \
 		        $(LIBINGRIDPATH)/IngridSimParticleSummary.so $(LIBINGRIDPATH)/BeamInfoSummary.so \
