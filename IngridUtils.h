@@ -12,6 +12,7 @@ class IngridUtils
 public:
     static std::vector<GEMVector> GetHits(IngridEventSummary* evt, int view);
     static std::vector<GEMTrack> GetTracks(IngridEventSummary* evt, int view);
+    static GEMVector GetTrueVertex(IngridEventSummary* evt, int view);
 };
 
 #endif

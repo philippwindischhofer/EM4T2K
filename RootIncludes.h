@@ -12,5 +12,7 @@
 #include <TColor.h>
 #include <TBranch.h>
 #include <TH1D.h>
+#include <TH2D.h>
+#include <TLegend.h>
 
 #endif

@@ -27,3 +27,14 @@ double EventMetrics::VertexDistance(std::vector<GEMTrack> a, std::vector<GEMTrac
     
     return retval;
 }
+
+double EventMetrics::VertexDistanceToPoint(std::vector<GEMTrack> a, GEMVector b)
+{
+    GEMVector ip_a = GEMLine::IntersectionPoint2D(a.at(0).GetLine(), a.at(1).GetLine());
+
+    double retval = GEMVector::EuclideanDistance(ip_a, b);
+
+    std::cout << "vertex distance to point = " << retval << std::endl;
+
+    return retval;
+}

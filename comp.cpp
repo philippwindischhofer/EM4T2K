@@ -64,26 +64,17 @@ int main(int argc, char** argv)
 
     // iterate over all events
     while(RequestedEvent < TMath::Min(number_events_a, number_events_b))
-	//while(RequestedEvent != -1)
+    //while(RequestedEvent != -1)
     {
 	tree_a -> GetEntry(RequestedEvent);
 	tree_b -> GetEntry(RequestedEvent);
+
+	//std::cout << RequestedEvent << std::endl;
 	
-	// get all hits and fitted tracks of both files in terms of the same objects!
-	std::vector<GEMVector> hits_x_a = IngridUtils::GetHits(evt_a, EW_VIEW_X);
-	std::vector<GEMVector> hits_y_a = IngridUtils::GetHits(evt_a, EW_VIEW_Y);
-	std::vector<GEMTrack> tracks_x_a = IngridUtils::GetTracks(evt_a, EW_VIEW_X);
-	std::vector<GEMTrack> tracks_y_a = IngridUtils::GetTracks(evt_a, EW_VIEW_Y);
-	
-	std::vector<GEMVector> hits_x_b = IngridUtils::GetHits(evt_b, EW_VIEW_X);
-	std::vector<GEMVector> hits_y_b = IngridUtils::GetHits(evt_b, EW_VIEW_Y);
-	std::vector<GEMTrack> tracks_x_b = IngridUtils::GetTracks(evt_b, EW_VIEW_X);
-	std::vector<GEMTrack> tracks_y_b = IngridUtils::GetTracks(evt_b, EW_VIEW_Y);
-		
 	// compare the two events
-	er.CompareEvents(tracks_x_a, tracks_x_b);
-	er.CompareEvents(tracks_y_a, tracks_y_b);	
-	
+	er.CompareEvents(evt_a, evt_b, EW_VIEW_X);
+	er.CompareEvents(evt_a, evt_b, EW_VIEW_Y);
+
 	/*
 	// for visualization, also draw the events side by side
 	EvdX_a -> Clear();

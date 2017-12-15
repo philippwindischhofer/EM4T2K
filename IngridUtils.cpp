@@ -24,6 +24,28 @@ std::vector<GEMVector> IngridUtils::GetHits(IngridEventSummary* evt, int view)
     return retval;
 }
 
+GEMVector IngridUtils::GetTrueVertex(IngridEventSummary* evt, int view)
+{
+    GEMVector retval(2);
+
+    std::cout << "number of vertices = " << evt -> NIngridSimVertexes() << std::endl;
+
+    IngridSimVertexSummary* vert = evt -> GetSimVertex(0);
+
+    if(view == EW_VIEW_X)
+    {
+	retval.SetCoord(0, vert -> xnu + VERTEX_XY_OFFSET);
+    }
+    else if(view == EW_VIEW_Y)
+    {
+	retval.SetCoord(0, vert -> ynu + VERTEX_XY_OFFSET);
+    }
+
+    retval.SetCoord(1, vert -> znu + VERTEX_Z_OFFSET);
+    
+    return retval;
+}
+
 std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 {
     std::vector<GEMTrack> retval;
