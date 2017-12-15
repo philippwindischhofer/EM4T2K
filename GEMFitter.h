@@ -44,8 +44,9 @@ class GEMLine
 public:
     GEMLine(int dim);
     GEMLine(GEMVector refPoint, GEMVector dirVect);
-    GEMVector GetRefPoint();
-    GEMVector GetDirVect();
+    GEMLine(const GEMLine& line);
+    GEMVector GetRefPoint() const;
+    GEMVector GetDirVect() const;
     double GetColor();
     double GetStyle();
     void SetColor(double newcolor);
@@ -58,6 +59,20 @@ private:
     double style;
 };
 
+class GEMTrack
+{
+public:
+    GEMTrack(GEMLine& line);
+    void AddHit(GEMVector& hit);
+    void AddHits(std::vector<GEMVector>& hits);
+    std::vector<GEMVector> GetHits();
+    GEMLine GetLine();
+
+private:
+    GEMLine line;
+    std::vector<GEMVector> hits;
+};
+
 class GEMFitter
 {
 public:
@@ -67,6 +82,7 @@ public:
     void PerformFit(double scalecrit, double convcrit);
     int GetNumberLines();
     GEMLine GetLine(int n);
+    std::vector<GEMTrack> GetTracks();
     void SetScreenSize(GEMVector& min_new, GEMVector& max_new);
     void PrintDataset();      
 

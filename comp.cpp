@@ -13,7 +13,8 @@ int main(int argc, char** argv)
     TApplication app("app", &argc, argv);
 	
     TFile* file_a = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise_recon.root");    
-    TFile* file_b = new TFile("/home/philipp/Private/T2K/EM4T2K/testevents.root");
+    //TFile* file_b = new TFile("/home/philipp/Private/T2K/EM4T2K/testevents.root");
+    TFile* file_b = new TFile("/home/philipp/Private/T2K/EM4T2K/out.root");
 
     TTree* tree_a = (TTree*) file_a -> Get("tree");
     TTree* tree_b = (TTree*) file_b -> Get("tree");

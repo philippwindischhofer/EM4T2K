@@ -53,6 +53,15 @@ void EventDisplay::PlotTracks(std::vector<GEMLine>& tracks)
     }
 }
 
+void EventDisplay::PlotTracks(std::vector<GEMTrack>& tracks)
+{
+    for(int i = 0; i < tracks.size(); i++)
+    {
+	GEMLine cur = tracks.at(i).GetLine();
+	PlotTrack(cur);
+    }
+}
+
 void EventDisplay::Update()
 {
     canv -> cd();

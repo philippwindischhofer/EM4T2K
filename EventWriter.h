@@ -22,6 +22,7 @@ public:
     ~EventWriter();
     void SetEvent(IngridEventSummary* evt);
     void AddTrack(GEMLine track, int view);
+    void AddTrack(GEMTrack track, int view);
     void WriteEvent();
     
 private:

@@ -23,6 +23,7 @@ public:
     void PlotHits(std::vector<GEMVector>& hits);
     void PlotTrack(GEMLine& track);
     void PlotTracks(std::vector<GEMLine>& tracks);
+    void PlotTracks(std::vector<GEMTrack>& tracks);
     void Update();
     void SaveAs(std::string file);
     void Clear();

@@ -103,11 +103,11 @@ int main(int argc, char** argv)
 	gf -> PrintDataset();
 
 	// read back the fitted tracks
-	std::vector<GEMLine> TracksX;
-	for(int i = 0; i < gf -> GetNumberLines(); i++)
+	std::vector<GEMTrack> TracksX = gf -> GetTracks();
+	
+	for(int i = 0; i < TracksX.size(); i++)
 	{
-	    TracksX.push_back(gf -> GetLine(i));
-	    ew -> AddTrack(gf -> GetLine(i), EW_VIEW_X);
+	    ew -> AddTrack(TracksX.at(i), EW_VIEW_X);
 	}
 
 	// perform the Y fitting
@@ -125,11 +125,11 @@ int main(int argc, char** argv)
 	gf -> PrintDataset();
 
 	// read back the fitted tracks
-	std::vector<GEMLine> TracksY;
-	for(int i = 0; i < gf -> GetNumberLines(); i++)
+	std::vector<GEMTrack> TracksY = gf -> GetTracks();
+	
+	for(int i = 0; i < TracksY.size(); i++)
 	{
-	    TracksY.push_back(gf -> GetLine(i));
-	    ew -> AddTrack(gf -> GetLine(i), EW_VIEW_Y);
+	    ew -> AddTrack(TracksY.at(i), EW_VIEW_Y);
 	}
 
 	// at this point, have all found tracks in the X- and Y-planes available

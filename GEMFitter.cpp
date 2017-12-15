@@ -42,6 +42,43 @@ GEMLine GEMFitter::GetLine(int n)
     return GEMLine(refPoint, dirVect);
 }
 
+std::vector<GEMTrack> GEMFitter::GetTracks()
+{
+    std::vector<GEMTrack> retval;
+    int number_lines = GetNumberLines();
+    int number_points = ds -> nb_points;
+
+    // first get all the lines and construct the individual tracks, still without their hits assigned
+    for(int i = 0; i < number_lines; i++)
+    {
+	GEMLine cur = GetLine(i);
+	retval.push_back(GEMTrack(cur));
+    }
+
+    // now, iterate over all points and assign each to the line with the greatest weight
+    for(int cur_point = 0; cur_point < number_points; cur_point++)
+    {
+	int matched_line = 0;
+	double max = 0;
+
+	for(int cur_line = 0; cur_line < number_lines; cur_line++)
+	{
+	    double cur = emws -> fit_weights[cur_line] -> coefs[cur_point];
+	    if(cur > max)
+	    {
+		matched_line = cur_line;
+		max = cur;
+	    }
+	}
+
+	// matched_line now contains the index of the line to which this point / hit should be assigned
+	GEMVector hit(dim, ds -> points[cur_point] -> coords);
+	retval[matched_line].AddHit(hit);
+    }
+    
+    return retval;
+}   
+
 void GEMFitter::SetScreenSize(GEMVector& min_new, GEMVector& max_new)
 {
     for(int i = 0; i < dim; i++)
@@ -172,12 +209,15 @@ GEMLine::GEMLine(int dim) : refPoint(dim), dirVect(dim), color(kRed), style(2)
 GEMLine::GEMLine(GEMVector refPoint, GEMVector dirVect) : refPoint(refPoint), dirVect(dirVect), color(kRed), style(2)
 { }
 
-GEMVector GEMLine::GetRefPoint()
+GEMLine::GEMLine(const GEMLine& line) : refPoint(line.GetRefPoint()), dirVect(line.GetDirVect()), color(kRed), style(2)
+{ }
+
+GEMVector GEMLine::GetRefPoint() const
 {
     return refPoint;
 }
 
-GEMVector GEMLine::GetDirVect()
+GEMVector GEMLine::GetDirVect() const
 {
     return dirVect;
 }
@@ -200,4 +240,32 @@ void GEMLine::SetColor(double newcolor)
 void GEMLine::SetStyle(double newstyle)
 {
     style = newstyle;
+}
+
+//---------------------------
+
+GEMTrack::GEMTrack(GEMLine& line) : line(line)
+{ }
+
+void GEMTrack::AddHit(GEMVector& hit)
+{
+    hits.push_back(hit);
+}
+
+void GEMTrack::AddHits(std::vector<GEMVector>& hits)
+{
+    for(int i = 0; i < hits.size(); i++)
+    {
+	AddHit(hits.at(i));
+    }
+}
+
+std::vector<GEMVector> GEMTrack::GetHits()
+{
+    return hits;
+}
+
+GEMLine GEMTrack::GetLine()
+{
+    return line;
 }
