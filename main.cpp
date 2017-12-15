@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Constants.h"
 #include "RootIncludes.h"
 #include "IngridIncludes.h"
 #include "GEMFitter.h"
@@ -37,11 +38,11 @@ int main(int argc, char** argv)
 
     int RequestedEvent = 0;
     
-    std::cin >> RequestedEvent;
-    std::cout << "got " << RequestedEvent << std::endl;
+    //std::cin >> RequestedEvent;
+    //std::cout << "got " << RequestedEvent << std::endl;
 
-    while(RequestedEvent != -1)
-	//while(RequestedEvent < 300)
+    //while(RequestedEvent != -1)
+    while(RequestedEvent < 300)
     {
 	tree_in -> GetEntry(RequestedEvent);
 	IngridHitSummary* Hit = new IngridHitSummary();
@@ -151,13 +152,13 @@ int main(int argc, char** argv)
 	EvdY -> Update();
 
 	// save the event displays
-	EvdX -> SaveAs(Form("./output/outX-%d.pdf", RequestedEvent));
-	EvdY -> SaveAs(Form("./output/outY-%d.pdf", RequestedEvent));
+	//EvdX -> SaveAs(Form("./output/outX-%d.pdf", RequestedEvent));
+	//EvdY -> SaveAs(Form("./output/outY-%d.pdf", RequestedEvent));
 
 	// take the next event
-	std::cin >> RequestedEvent;
+	//std::cin >> RequestedEvent;
 
-	//RequestedEvent++;
+	RequestedEvent++;
     }
 
     std::cout << "stopped by user" << std::endl;

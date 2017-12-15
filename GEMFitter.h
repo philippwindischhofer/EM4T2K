@@ -33,6 +33,7 @@ public:
     GEMVector& operator*=(float rhs);
     friend GEMVector operator*(GEMVector lhs, float rhs);
     friend GEMVector operator*(float rhs, GEMVector lhs);
+    friend double operator*(GEMVector lhs, GEMVector rhs);
 
 private:
     int dim;

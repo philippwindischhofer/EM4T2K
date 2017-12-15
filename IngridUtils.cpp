@@ -24,9 +24,9 @@ std::vector<GEMVector> IngridUtils::GetHits(IngridEventSummary* evt, int view)
     return retval;
 }
 
-std::vector<GEMLine> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
+std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 {
-    std::vector<GEMLine> retval;
+    std::vector<GEMTrack> retval;
 
     // look only at 2D tracks
     int number_tracks = evt -> NPMRecons();
@@ -45,15 +45,37 @@ std::vector<GEMLine> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 	    start.SetCoord(0, (recon -> startz) / EV_Z_SCALE - EV_Z_OFFSET);
 	    end.SetCoord(0, (recon -> endz) / EV_Z_SCALE - EV_Z_OFFSET);
 
-	    std::cout << "view = " << view << std::endl;
-	    std::cout << "recon -> startxy = " << recon -> startxy << std::endl;
-	    std::cout << "recon -> startz = " << recon -> startz << std::endl;
-	    std::cout << "start.x = " << start.GetCoord(0) << std::endl;
-	    std::cout << "start.z = " << start.GetCoord(1) << std::endl;
+	    if(DEBUG)
+	    {
+		std::cout << "view = " << view << std::endl;
+		std::cout << "recon -> startxy = " << recon -> startxy << std::endl;
+		std::cout << "recon -> startz = " << recon -> startz << std::endl;
+		std::cout << "start.x = " << start.GetCoord(0) << std::endl;
+		std::cout << "start.z = " << start.GetCoord(1) << std::endl;
+		
+		std::cout << "number hits attached = " << recon -> Nhits() << std::endl;
+		std::cout << "number tracks attached = " << recon -> Ntracks() << std::endl;
+	    }
 
-	    GEMLine cur(start, end - start);
+	    GEMLine cur_line(start, end - start);
+	    GEMTrack cur_track(cur_line);
 
-	    retval.push_back(cur);
+	    // now extract the hits and add them to the track
+	    int number_hits = recon -> Nhits();
+
+	    for(int i = 0; i < number_hits; i++)
+	    {
+		IngridHitSummary* cur_ingrid_hit = recon -> GetIngridHit(i);
+		if(cur_ingrid_hit)
+		{
+		    GEMVector cur_hit(2);
+		    cur_hit.SetCoord(0, cur_ingrid_hit -> xy);
+		    cur_hit.SetCoord(1, cur_ingrid_hit -> z);
+		    cur_track.AddHit(cur_hit);
+		}
+	    }
+
+	    retval.push_back(cur_track);
 	}
     }
     

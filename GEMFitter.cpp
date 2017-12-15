@@ -177,6 +177,18 @@ GEMVector operator*(float rhs, GEMVector lhs)
     return lhs;
 }
 
+double operator*(GEMVector lhs, GEMVector rhs)
+{
+    double retval = 0;
+
+    for(int i = 0; i < lhs.dim; i++)
+    {
+	retval += lhs.GetCoord(i) * rhs.GetCoord(i);
+    }
+    
+    return retval;
+}
+
 void GEMVector::SetCoord(int n, double val)
 {
     vals[n] = val;
