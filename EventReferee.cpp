@@ -3,9 +3,11 @@
 EventReferee::EventReferee()
 {
     single_track_orientation = new TH1D("single_track_orientation", "track orientation", 20, 0, 1);
+    single_track_orientation -> GetXaxis() -> SetTitle("cos(d_{1}, d_{2})");
     single_track_orientation -> SetStats(kFALSE);
 
-    vertex_distance = new TH1D("vertex_distance", "vertex distance", 20, 0, 1);
+    vertex_distance = new TH1D("vertex_distance", "vertex distance", 20, 0, 100);
+    vertex_distance -> GetXaxis() -> SetTitle("| IP_{1} - IP_{2} |");
     vertex_distance -> SetStats(kFALSE);
 }
 
@@ -24,6 +26,7 @@ void EventReferee::CompareEvents(std::vector<GEMTrack> ref, std::vector<GEMTrack
     if(ref.size() == 2 && aux.size() == 2)
     {
 	// ... compare them according to the positions of the two vertices (as the intersection points of the two lines)
+	vertex_distance -> Fill(EventMetrics::VertexDistance(ref, aux));
     }
 }
 

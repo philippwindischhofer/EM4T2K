@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "RootIncludes.h"
+#include <TMath.h>
 
 extern "C" {
 #include "../libgem/libgem.h"
@@ -23,6 +24,7 @@ public:
     double GetCoord(int n) const;
     double* GetPtr();
     void Print() const;
+    static double EuclideanDistance(GEMVector a, GEMVector b);
 
     GEMVector& operator+=(const GEMVector& rhs);
     friend GEMVector operator+(GEMVector lhs, const GEMVector& rhs);
@@ -46,12 +48,14 @@ public:
     GEMLine(int dim);
     GEMLine(GEMVector refPoint, GEMVector dirVect);
     GEMLine(const GEMLine& line);
+    void Print() const;
     GEMVector GetRefPoint() const;
     GEMVector GetDirVect() const;
     double GetColor();
     double GetStyle();
     void SetColor(double newcolor);
     void SetStyle(double newstyle);
+    static GEMVector IntersectionPoint2D(GEMLine a, GEMLine b);
 
 private:
     GEMVector refPoint;

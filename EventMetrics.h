@@ -8,6 +8,7 @@ class EventMetrics
 {
 public:
     static double TrackOrientation(GEMTrack a, GEMTrack b);
+    static double VertexDistance(std::vector<GEMTrack> a, std::vector<GEMTrack> b);
 };
 
 #endif

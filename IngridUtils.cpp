@@ -30,7 +30,7 @@ std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 
     // look only at 2D tracks
     int number_tracks = evt -> NPMRecons();
-
+    
     for(int i = 0; i < number_tracks; i++)
     {
 	PMReconSummary* recon = evt -> GetPMRecon(i);

@@ -29,6 +29,7 @@ void EventWriter::SetEvent(IngridEventSummary* evt)
     evt_out = new IngridEventSummary(*evt);
 }
 
+/*
 void EventWriter::AddTrack(GEMLine track, int view)
 {
     recon = new PMReconSummary();
@@ -68,7 +69,7 @@ void EventWriter::AddTrack(GEMLine track, int view)
     recon -> hitmod = 15;
     
     evt_out -> AddPMModRecon(recon, 1, 1, view);
-}
+}*/
 
 void EventWriter::AddTrack(GEMTrack track, int view)
 {
@@ -121,10 +122,11 @@ void EventWriter::AddTrack(GEMTrack track, int view)
 	cur -> view = view;
 	cur -> xy = hits.at(i).GetCoord(0);
 	cur -> z = hits.at(i).GetCoord(1);
+	cur -> mod = 15;
 	recon -> AddIngridHit(cur);
     }
     
-    evt_out -> AddPMModRecon(recon, 1, 1, view);    
+    evt_out -> AddPMModRecon(recon, 15, 4, view);    
 }
 
 void EventWriter::WriteEvent()

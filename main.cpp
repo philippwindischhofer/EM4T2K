@@ -17,13 +17,15 @@ int main(int argc, char** argv)
     double accuracy = 0.00001;
     double scale = 30;
 
+    /*
     EventDisplay* EvdX = new EventDisplay("X events", "z [cm]", "x [cm]");
     EventDisplay* EvdY = new EventDisplay("Y events", "z [cm]", "y [cm]");
     EvdX -> Update();
     EvdY -> Update();
+    */
     
     // now, need to read the data files and then perform the fitting (do a plot in between)
-    TFile* file_in = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise.root");    
+    TFile* file_in = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise.root", "open");    
     TTree* tree_in = (TTree*) file_in -> Get("tree");
     TBranch* br = tree_in -> GetBranch("fDefaultReco.");
 
@@ -140,6 +142,7 @@ int main(int argc, char** argv)
 	// TODO: call here the event writer again to add the found tracks
 	ew -> WriteEvent();
 
+	/*
 	// now plot everything
 	EvdX -> Clear();
 	EvdY -> Clear();
@@ -151,6 +154,7 @@ int main(int argc, char** argv)
 	EvdY -> PlotHits(HitsY);
 	EvdY -> PlotTracks(TracksY);
 	EvdY -> Update();
+	*/
 
 	// save the event displays
 	//EvdX -> SaveAs(Form("./output/outX-%d.pdf", RequestedEvent));

@@ -213,6 +213,12 @@ void GEMVector::Print() const
     std::cout << std::endl;
 }
 
+double GEMVector::EuclideanDistance(GEMVector a, GEMVector b)
+{
+    return TMath::Sqrt((a - b) * (a - b));
+}
+
+
 //---------------------------
 
 GEMLine::GEMLine(int dim) : refPoint(dim), dirVect(dim), color(kRed), style(2)
@@ -223,6 +229,15 @@ GEMLine::GEMLine(GEMVector refPoint, GEMVector dirVect) : refPoint(refPoint), di
 
 GEMLine::GEMLine(const GEMLine& line) : refPoint(line.GetRefPoint()), dirVect(line.GetDirVect()), color(kRed), style(2)
 { }
+
+void GEMLine::Print() const
+{
+    std::cout << "ref point:" << std::endl;
+    refPoint.Print();
+
+    std::cout << "dir vect:" << std::endl;
+    dirVect.Print();
+}
 
 GEMVector GEMLine::GetRefPoint() const
 {
@@ -252,6 +267,22 @@ void GEMLine::SetColor(double newcolor)
 void GEMLine::SetStyle(double newstyle)
 {
     style = newstyle;
+}
+
+GEMVector GEMLine::IntersectionPoint2D(GEMLine a, GEMLine b)
+{
+    GEMVector d_a = a.GetDirVect();
+    GEMVector d_b = b.GetDirVect();
+
+    GEMVector delta_r = b.GetRefPoint() - a.GetRefPoint();
+
+    double t = (d_b.GetCoord(0) * delta_r.GetCoord(1) - d_b.GetCoord(1) * delta_r.GetCoord(0)) / (d_b.GetCoord(0) * d_a.GetCoord(1) - d_b.GetCoord(1) * d_a.GetCoord(0));
+
+    GEMVector ip = d_a * t + a.GetRefPoint();
+
+    std::cout << "t = " << t << std::endl;
+
+    return ip;
 }
 
 //---------------------------
