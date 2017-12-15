@@ -11,5 +11,6 @@
 #include <TTree.h>
 #include <TColor.h>
 #include <TBranch.h>
+#include <TH1D.h>
 
 #endif

@@ -10,7 +10,7 @@ CC		= 	g++-4.9
 # SOURCES		=	$(wildcard *.cpp)
 # OBJECTS		=	$(patsubst src%,obj%, $(patsubst %.cpp,%.o, $(SOURCES)))
 
-OBJECTSLIB	=	EventDisplay.o EventWriter.o GEMFitter.o IngridUtils.o EventMetrics.o
+OBJECTSLIB	=	EventDisplay.o EventWriter.o GEMFitter.o IngridUtils.o EventMetrics.o EventReferee.o
 
 # for libgem
 LIBGEMPATH	=	/home/philipp/Private/T2K/libgem/

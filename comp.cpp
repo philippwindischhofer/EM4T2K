@@ -7,12 +7,15 @@
 #include "EventWriter.h"
 #include "IngridUtils.h"
 #include "EventMetrics.h"
+#include "EventReferee.h"
 #include "TString.h"
 #include "TMath.h"
 
 int main(int argc, char** argv)
 {
     TApplication app("app", &argc, argv);
+
+    EventReferee er;
 
     // file A is always the reference file, from which the "true" number of tracks etc are taken
     TFile* file_a = new TFile("/home/philipp/Private/T2K/GUI_indep/MCFiles/WMMC_Run1_1_wNoise_recon.root");    
@@ -74,13 +77,9 @@ int main(int argc, char** argv)
 	std::vector<GEMTrack> tracks_x_b = IngridUtils::GetTracks(evt_b, EW_VIEW_X);
 	std::vector<GEMTrack> tracks_y_b = IngridUtils::GetTracks(evt_b, EW_VIEW_Y);
 
-	// now look at all events and compare them depending on their type
-	if(tracks_x_a.size() == 1 && tracks_x_b.size() == 1)
-	{
-	    // for single-track events
-	    std::cout << "found single-track event" << std::endl;
-	    std::cout << EventMetrics::TrackOrientation(tracks_x_a.at(0), tracks_x_b.at(0)) << std::endl;
-	}
+	// compare the two events
+	er.CompareEvents(tracks_x_a, tracks_x_b);
+	er.CompareEvents(tracks_y_a, tracks_y_b);
 
 	// for visualization, also draw the events side by side
 	/*
@@ -109,8 +108,9 @@ int main(int argc, char** argv)
 	//std::cin >> RequestedEvent;
 	//std::cout << "got " << RequestedEvent << std::endl;
     }
-    
-    std::cout << "stopped by user" << std::endl;
+
+    er.Report();
+    std::cout << "stopped" << std::endl;
 
     app.Run();
     return(0);

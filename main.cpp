@@ -27,6 +27,8 @@ int main(int argc, char** argv)
     TTree* tree_in = (TTree*) file_in -> Get("tree");
     TBranch* br = tree_in -> GetBranch("fDefaultReco.");
 
+    int number_events = tree_in -> GetEntries();
+
     // prepare the object that is going to write the processed events back to disk
     EventWriter* ew = new EventWriter("./out.root");
     
@@ -35,14 +37,13 @@ int main(int argc, char** argv)
     br -> SetAddress(&evt_in);
 
     // get the first event here
-
     int RequestedEvent = 0;
     
     //std::cin >> RequestedEvent;
     //std::cout << "got " << RequestedEvent << std::endl;
 
     //while(RequestedEvent != -1)
-    while(RequestedEvent < 300)
+    while(RequestedEvent < number_events)
     {
 	tree_in -> GetEntry(RequestedEvent);
 	IngridHitSummary* Hit = new IngridHitSummary();

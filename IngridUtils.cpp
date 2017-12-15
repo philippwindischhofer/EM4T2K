@@ -65,7 +65,8 @@ std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 
 	    for(int i = 0; i < number_hits; i++)
 	    {
-		IngridHitSummary* cur_ingrid_hit = recon -> GetIngridHit(i);
+		IngridHitSummary* cur_ingrid_hit = (IngridHitSummary*)(recon -> GetIngridHit(i));
+
 		if(cur_ingrid_hit)
 		{
 		    GEMVector cur_hit(2);
