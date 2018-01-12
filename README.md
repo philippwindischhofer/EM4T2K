@@ -36,4 +36,4 @@ This will produce, draw and save several plots. By default, it generates the fol
 
 # 3.) To extend and adapt the code:
 
-In order to add new metrics with which to compare different classes of events, you may want to update / extend the class `EventReferee`. The method `CompareEvents()` is called for each event that needs to be compared. The method `Report()` is called once all events have been processed. This method is intended to carry out the relevant plotting operations at the end.
+In order to add new metrics with which to compare different classes of events, you may want to update / extend the class `EventReferee`. The method `CompareEvents()` is called for each event that needs to be compared. The method `Report()` is called once all events have been processed. This method is intended to carry out the relevant plotting operations at the end. The class `EventMetrics` is supposed to contain any auxiliary methods needed to carry out the actual comparison.
