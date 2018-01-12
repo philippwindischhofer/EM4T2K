@@ -85,6 +85,8 @@ std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 	    // now extract the hits and add them to the track
 	    int number_hits = recon -> Nhits();
 
+	    std::cout << "number INGRID hits = " << number_hits << std::endl;
+
 	    for(int i = 0; i < number_hits; i++)
 	    {
 		IngridHitSummary* cur_ingrid_hit = (IngridHitSummary*)(recon -> GetIngridHit(i));
@@ -95,12 +97,15 @@ std::vector<GEMTrack> IngridUtils::GetTracks(IngridEventSummary* evt, int view)
 		    cur_hit.SetCoord(0, cur_ingrid_hit -> xy);
 		    cur_hit.SetCoord(1, cur_ingrid_hit -> z);
 		    cur_track.AddHit(cur_hit);
+		    std::cout << "current INGRID hit no." << i << std::endl;
 		}
 	    }
 
 	    retval.push_back(cur_track);
 	}
     }
+
+    std::cout << "----- finished processing event ------" << std::endl;
     
     return retval;
 }

@@ -71,7 +71,7 @@ void EventWriter::AddTrack(GEMLine track, int view)
     evt_out -> AddPMModRecon(recon, 1, 1, view);
 }*/
 
-void EventWriter::AddTrack(GEMTrack track, int view)
+void EventWriter::AddTrack(GEMTrack track, int view, IngridEventSummary* evt)
 {
     GEMLine line = track.GetLine();
     std::vector<GEMVector> hits = track.GetHits();
@@ -113,9 +113,12 @@ void EventWriter::AddTrack(GEMTrack track, int view)
     // to make it into an INGRID track
     recon -> hitmod = 15;
 
+    std::cout << "trying to refind INGRID hits" << std::endl;
+    
     // now add all the associated hits to the PMRecon object
     for(int i = 0; i < hits.size(); i++)
     {
+	/*
 	IngridHitSummary* cur = new IngridHitSummary();
 
 	// again, add only the very basic info at this point, i.e. x / y and z positions
@@ -124,6 +127,35 @@ void EventWriter::AddTrack(GEMTrack track, int view)
 	cur -> z = hits.at(i).GetCoord(1);
 	cur -> mod = 15;
 	recon -> AddIngridHit(cur);
+	*/
+
+	// workaround: instead of creating a new IngridHitSummary object that holds this hit (which somehow doesn't work for very weird reasons), search for the corresponding, already existing IngridHitSummary in the event and it it instead
+	IngridHitSummary* existing_hit;
+
+	std::cout << "looking for " << hits.at(i).GetCoord(0) << " / " << hits.at(i).GetCoord(1) << " in " << evt -> NIngridHits() << " hits" << std::endl;
+
+	for(int j = 0; j < evt -> NIngridHits(); j++)
+	{
+	    // load the next hit in the event
+	    existing_hit = evt -> GetIngridHit(j);
+
+	    if((existing_hit -> mod == 15) && (existing_hit -> time < 20))
+	    {
+		std::cout << "currently looking at " << j << " : " << (existing_hit -> xy + GEO_XY_OFFSET) << " / " << (existing_hit -> z + GEO_Z_OFFSET) << std::endl;
+	    
+		// check if it matches the coordinates of the hit that is meant to be added
+		if((existing_hit -> view == view) && (existing_hit -> xy + GEO_XY_OFFSET == hits.at(i).GetCoord(1)) && (existing_hit -> z + GEO_Z_OFFSET == hits.at(i).GetCoord(0)))
+		{
+		    std::cout << "corresponding hit was recovered!" << std::endl;
+		    break;
+		}
+	    }
+	}
+
+	std::cout << "searched all" << std::endl;
+
+	// now add the already existing hit to the object
+	recon -> AddIngridHit(existing_hit);
     }
     
     evt_out -> AddPMModRecon(recon, 15, 4, view);    

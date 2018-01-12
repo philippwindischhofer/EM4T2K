@@ -5,6 +5,7 @@
 #include "RootIncludes.h"
 #include "IngridIncludes.h"
 #include "GEMFitter.h"
+#include "DetectorGeometry.h"
 
 #define EW_VIEW_X 1
 #define EW_VIEW_Y 0
@@ -22,7 +23,7 @@ public:
     ~EventWriter();
     void SetEvent(IngridEventSummary* evt);
     void AddTrack(GEMLine track, int view);
-    void AddTrack(GEMTrack track, int view);
+    void AddTrack(GEMTrack track, int view, IngridEventSummary* evt);
     void WriteEvent();
     
 private:

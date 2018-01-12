@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 	
 	for(int i = 0; i < TracksX.size(); i++)
 	{
-	    ew -> AddTrack(TracksX.at(i), EW_VIEW_X);
+	    ew -> AddTrack(TracksX.at(i), EW_VIEW_X, evt_in);
 	}
 
 	// perform the Y fitting
@@ -133,7 +133,7 @@ int main(int argc, char** argv)
 	
 	for(int i = 0; i < TracksY.size(); i++)
 	{
-	    ew -> AddTrack(TracksY.at(i), EW_VIEW_Y);
+	    ew -> AddTrack(TracksY.at(i), EW_VIEW_Y, evt_in);
 	}
 
 	// at this point, have all found tracks in the X- and Y-planes available
