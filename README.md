@@ -2,6 +2,8 @@
  This is EM4T2K, using the expectation maximization algorithm to reconstruct events in the WAGASCI detector
 ------------------------------------------------------------------------------------------------------------
 
+For any comments, complaints, suggestions and further information, please send an email to philipp.windischhofer@gmail.com.
+
 # 0.) Introduction:
 The purpose is to assess the feasibility of using the expectation maximization algorithm (as implemented in `libgem`) for track finding in events recorded by the WAGASCI detector, and to compare the performance with that of the legacy algorithm used so far, which is based on a cellular automaton. This project consists of two main parts:
 
