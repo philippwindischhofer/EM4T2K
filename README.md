@@ -11,7 +11,7 @@ The purpose is to assess the feasibility of using the expectation maximization a
 # 1.) To prepare the environment and compile the code:
 
 - source the file `setup_env.sh`
-- compile the code by typing `make all` (Note: you may have to adapt the version of your `gcc` compiler in the Makefile, for development and initial testing, `gcc 4.9` was used.
+- compile the code by typing `make all` (Note: you may have to adapt the version of your `gcc` compiler in the Makefile, for development and initial testing, `gcc 4.9` was used. You may also have to adapt the directory in which `libgem` is installed. The default directory used is `../libgem`.)
 
 This will create two executables, `reco` and `comp`.
 
