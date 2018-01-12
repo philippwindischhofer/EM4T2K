@@ -18,19 +18,15 @@ This will create two executables, `reco` and `comp`.
 # 2.) To run the project:
 
 - the first step is to apply `libgem` to the track reconstruction. This part is handled by `reco`. To run it on an input file containing the raw data (`WMMC_Run1_1_wNoise.root`), do
-
 ```
 ./reco WMMC_Run1_1_wNoise.root libgem_reco.root
 ```
-
 The file `libgem_reco.root` will then contain the reconstructed events.
 
 - the next step is to run `comp` to compare this result against the output of the legacy reconstruction. For the input file used above, this information is contained in `WMMC_Run1_1_wNoise_legacy_reco.root`. Thus, run
-
 ```
 ./comp WMMC_Run1_1_wNoise_legacy_reco.root libgem_reco.root 
 ```
-
 This will produce, draw and save several plots. By default, it generates the following output files:
 
 - `number_tracks.pdf`
