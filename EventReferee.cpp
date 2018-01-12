@@ -58,6 +58,10 @@ void EventReferee::CompareEvents(IngridEventSummary* ref, IngridEventSummary* au
 	vertex_MC_distance_aux -> Fill(EventMetrics::VertexDistanceToPoint(tracks_aux, true_IP));
 	vertex_MC_distance_ref -> Fill(EventMetrics::VertexDistanceToPoint(tracks_ref, true_IP));
     }
+
+    /*
+      Add your own tests and comparisons here! It is suggested to add new lower-level functions to the EventMetrics class, to keep the code tidy.
+     */
 }
 
 void EventReferee::Report()
@@ -71,7 +75,6 @@ void EventReferee::Report()
     vertex_distance -> Draw();
 
     TCanvas* vertex_MC_distance_canv = new TCanvas("vertex_MC_canv", "Vertex-MC distance", 800, 600);
-    
     vertex_MC_distance_canv -> cd();
     vertex_MC_distance_aux -> Draw();
     vertex_MC_distance_ref -> Draw("same");
@@ -84,4 +87,18 @@ void EventReferee::Report()
     TCanvas* number_tracks_canv = new TCanvas("number_tracks_canv", "number of tracks", 800, 600);
     number_tracks_canv -> cd();
     number_tracks -> Draw("colz");
+
+    vertex_MC_distance_canv -> cd();
+    vertex_MC_distance_canv -> SaveAs("vertex_MC_distance.pdf");
+
+    track_orientation_canv -> cd();
+    track_orientation_canv -> SaveAs("track_orientation.pdf");
+
+    vertex_distance_canv -> cd();
+    vertex_distance_canv -> SaveAs("vertex_distance.pdf");
+
+    number_tracks_canv -> cd();
+    number_tracks_canv -> SaveAs("number_tracks.pdf");
+
+    std::cout << "done reporting" << std::endl;
 }

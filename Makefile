@@ -1,5 +1,5 @@
-EXEC1		=	main
-OBJECTS1	= 	main.o
+EXEC1		=	reco
+OBJECTS1	= 	reco.o
 
 EXEC2		=	comp
 OBJECTS2	=	comp.o

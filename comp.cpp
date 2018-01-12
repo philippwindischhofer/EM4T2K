@@ -12,7 +12,7 @@
 #include "TMath.h"
 
 int main(int argc, char** argv)
-{
+{  
     std::cout << argc << std::endl;
     if(argc != 3)
     {
@@ -50,33 +50,21 @@ int main(int argc, char** argv)
     // listen for events to compare:
     int RequestedEvent = 0;
     
-    //std::cin >> RequestedEvent;
-    //std::cout << "got " << RequestedEvent << std::endl;
-
-    //RequestedEvent = 62;
-    
     // iterate over all events
     while(RequestedEvent < TMath::Min(number_events_a, number_events_b))
-    //while(RequestedEvent != -1)
     {
 	tree_a -> GetEntry(RequestedEvent);
 	tree_b -> GetEntry(RequestedEvent);
-
-	//std::cout << RequestedEvent << std::endl;
 	
 	// compare the two events
 	er.CompareEvents(evt_a, evt_b, EW_VIEW_X);
 	er.CompareEvents(evt_a, evt_b, EW_VIEW_Y);
 
 	RequestedEvent++;
-	
-	// take the next event
-	//std::cin >> RequestedEvent;
-	//std::cout << "got " << RequestedEvent << std::endl;
     }
 
     er.Report();
-    std::cout << "stopped" << std::endl;
+    std::cout << "Stopped. Press Ctrl+C to exit." << std::endl;
 
     app.Run();
     return(0);
