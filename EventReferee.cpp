@@ -2,7 +2,7 @@
 
 EventReferee::EventReferee()
 {
-    number_tracks = new TH2D("number_tracks", "number of tracks", 5, -0.5, 5.5, 5, -0.5, 5.5);
+    number_tracks = new TH2D("number_tracks", "number of tracks", 6, -0.5, 5.5, 6, -0.5, 5.5);
     number_tracks -> GetXaxis() -> SetTitle("tracks from cellular automaton");
     number_tracks -> GetYaxis() -> SetTitle("tracks from libgem");
     number_tracks -> SetStats(kFALSE);
