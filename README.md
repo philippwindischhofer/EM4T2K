@@ -17,7 +17,7 @@ This will create two executables, `reco` and `comp`.
 
 # 2.) To run the project:
 
-- the first step is to apply `libgem` to the track reconstruction. This part is handled by `reco`. To run it on an input file containing the raw data (`WMMC_Run1_1_wNoise.root`), do
+- the first step is to apply `libgem` to the track reconstruction. This part is handled by `reco`. To run it on an input file containing the raw data (for example, `WMMC_Run1_1_wNoise.root`), do
 ```
 ./reco WMMC_Run1_1_wNoise.root libgem_reco.root
 ```
