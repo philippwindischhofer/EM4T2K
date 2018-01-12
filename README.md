@@ -29,9 +29,11 @@ The file `libgem_reco.root` will then contain the reconstructed events.
 ```
 This will produce, draw and save several plots. By default, it generates the following output files:
 
-- `number_tracks.pdf`
-- `track_orientation.pdf`
-- `vertex_distance.pdf`
-- `vertex_MC_distance.pdf`
+- `number_tracks.pdf`: a 2D histogram comparing the number of tracks found by `libgem` and the legacy reconstruction code
+- `track_orientation.pdf`: for events where both `libgem` and the legacy reconstruction fitted exactly one track, it shows the distribution of the angle between these two reconstructed tracks
+- `vertex_distance.pdf`: for events where both `libgem` and the legacy reconstruction fitted exactly two tracks (i.e. the class of events having a unique intersection point), it computes and shows the distribution of the euclidean distance between the intersection points determined by the two methods
+- `vertex_MC_distance.pdf`: for the same class of events, it computes and shows instead the euclidean distance between the vertex determined by `libgem` and the actual truth information
 
 # 3.) To extend and adapt the code:
+
+In order to add new metrics with which to compare different classes of events, you may want to update / extend the class `EventReferee`. The method `CompareEvents()` is called for each event that needs to be compared. The method `Report()` is called once all events have been processed. This method is intended to carry out the relevant plotting operations at the end.
